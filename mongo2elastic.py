@@ -91,7 +91,7 @@ def mongo_to_elastic():
     limit = int(limit)
 
     users = db.users.find(
-        {}, {'roles': 0, 'declaraciones': 0, 'refreshJwtToken': 0}
+        {}, {'declaraciones': 0, 'refreshJwtToken': 0}
     ).limit(limit)
 
     print(f'Limit: {limit}')
@@ -105,7 +105,8 @@ def mongo_to_elastic():
             'curp': user.get('curp'),
             'rfc': user.get('rfc'),
             'createdAt': user.get('createdAt'),
-            'updatedAt': user.get('updatedAt')
+            'updatedAt': user.get('updatedAt'),
+            'roles': user.get('roles')
         }
         #print (user_doc)
         resp = es.index(index='users', id=user['_id'], body=user_doc)
