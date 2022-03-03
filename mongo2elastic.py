@@ -87,8 +87,14 @@ def mongo_to_elastic():
 
     es.indices.refresh(index='users')
 
+    limit = os.environ.get('MONGO_LIMIT', 100)
+    limit = int(limit)
+
     users = db.users.find(
-        {}, {'roles': 0, 'declaraciones': 0, 'refreshJwtToken': 0})
+        {}, {'roles': 0, 'declaraciones': 0, 'refreshJwtToken': 0}
+    ).limit(limit)
+
+    print(f'Limit: {limit}')
 
     for user in users:
         user_doc = {
